@@ -101,6 +101,32 @@ def get( filepath, key ):
         exit()
     
 
-print("Name:" + get( "details.properties", "state" ))
+def getWriter( filepath ):
+    verifyFilePath( filepath )
+    writer = open( filepath, 'w' )
+    return writer
+
+def update( filepath, key, value):
+    props_dict = generateMap( getReader( filepath ) )
+    update_counter = 0
+    for dict_key, dict_value in props_dict.items(): 
+         if dict_key.rstrip() == key.rstrip(): 
+             props_dict[ dict_key ] = value
+             update_counter = update_counter + 1
+    print( "Updated Dictionary: " + str( props_dict ))
+    writer = getWriter( filepath )
+    for updated_key, updated_value in props_dict.items():
+        writer.write(updated_key.rstrip().strip() + "=" + updated_value.rstrip().strip() + "\n")
+    writer.close()
+    
+    
+    if not update_counter > 0 :
+        try:
+            raise KeyError( "Key: " + key + " does not exist in the specified properties file: " + filepath ) 
+        except KeyError as keyerror:
+            print( "[Exception KeyError]\t" + str( keyerror ) )
+            exit()
+
+update( "details.properties", "state", "UP" )
 
 #printFileContent(getReader("details.properties"))
