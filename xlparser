@@ -1,0 +1,48 @@
+'''
+Created on 23-Dec-2019
+
+@author: Sangeeta-Laptop
+'''
+# importing openpyxl module 
+import openpyxl 
+
+
+# Give the location of the file 
+path = "C:\\Users\\Sangeeta-Laptop\\Documents\\TestCase-pyDemo.xlsx"
+  
+# workbook object is created 
+wb_obj = openpyxl.load_workbook(path) 
+  
+sheet_obj = wb_obj.active 
+  
+max_row = sheet_obj.max_row
+max_column= sheet_obj.max_column
+# Will print a particular row value 
+header_str = []
+xl_dict = {}
+for i in range(1, max_row + 1): 
+    # iterate over all columns
+    column_data=[]
+    header_list=[]
+    record_dict={}
+    dict_key=""
+    for j in range(1,max_column+1):
+    # get particular cell value    
+        cell_obj=sheet_obj.cell(row=i,column=j)
+        
+        # print cell value         
+        if( i == 1):
+            header_str.append(str(cell_obj.value))
+        else:
+            header_list = header_str[1:]
+            if(j==1):
+                dict_key = str(cell_obj.value)
+            else:
+                record_dict[header_str[j-1]]=str(cell_obj.value)
+            #column_data=column_data+str(cell_obj.value) + '|'
+            #print( header_str.split("|") a)
+    xl_dict[dict_key] = record_dict
+    print("Column String: "  + str(header_list))
+    print("Record Dict: " + str(record_dict))
+    print("\n")
+print("Dictionary: " + str(xl_dict)) 
